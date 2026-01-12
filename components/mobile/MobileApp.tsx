@@ -992,7 +992,7 @@ const HomeView = ({ user, onOpenDreamSavers, onOpenBillPayment, onOpenTransfer, 
                     </h2>
                 </div>
                 {/* Updated Bank Sumut Logo - More reliable SVG Link & Sizing */}
-                <img src="/bank-sumut-logo.svg" className="w-20 h-auto object-contain" alt="Bank Sumut" />
+                <img src={`${import.meta.env.BASE_URL}bank-sumut-logo.svg`} className="w-20 h-auto object-contain" alt="Bank Sumut" />
             </div>
             
             <div className="h-[1px] w-full bg-gray-100 my-4"></div>

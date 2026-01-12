@@ -113,7 +113,7 @@ const CRMLayout: React.FC<CRMLayoutProps> = ({
               {isMobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
             </button>
             <div className="flex items-center gap-3">
-              <img src="/bank-sumut-logo.svg" alt="Bank Sumut" className="h-8 w-auto" />
+              <img src={`${import.meta.env.BASE_URL}bank-sumut-logo.svg`} alt="Bank Sumut" className="h-8 w-auto" />
               <div className="hidden sm:block">
                 <h1 className="font-bold text-lg text-slate-900 leading-tight">CRM Bank Sumut</h1>
                 <p className="text-[10px] text-gray-500 font-medium -mt-0.5">Platform Terintegrasi</p>

@@ -123,7 +123,7 @@ function AppContent() {
       {/* Simple Header - View Switcher Only */}
       <div className="w-full bg-white border-b border-gray-200 px-4 py-3 flex items-center justify-center gap-4 shadow-sm">
         <div className="flex items-center gap-3">
-          <img src="/bank-sumut-logo.svg" alt="Bank Sumut" className="h-8 w-auto" />
+          <img src={`${import.meta.env.BASE_URL}bank-sumut-logo.svg`} alt="Bank Sumut" className="h-8 w-auto" />
           <h1 className="font-bold text-lg text-gray-800">SULTAN <span className="text-sumut-blue text-sm font-normal">RFM CRM</span></h1>
         </div>
         

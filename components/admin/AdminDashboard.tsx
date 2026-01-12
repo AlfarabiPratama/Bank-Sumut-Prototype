@@ -811,7 +811,7 @@ _Klik "▶ Activate Campaign" untuk meluncurkan._`);
       <aside className="w-64 bg-white border-r border-gray-200 hidden md:flex flex-col fixed h-full z-10">
         <div className="p-5 border-b border-gray-100">
            <div className="flex items-center gap-3">
-             <img src="/bank-sumut-logo.svg" alt="Bank Sumut" className="h-10 w-auto object-contain" />
+             <img src={`${import.meta.env.BASE_URL}bank-sumut-logo.svg`} alt="Bank Sumut" className="h-10 w-auto object-contain" />
              <div className="flex flex-col">
                <h1 className="font-bold text-lg text-slate-900 leading-tight">SULTAN</h1>
                <p className="text-[11px] text-gray-500 font-medium">CRM Dashboard v2.0</p>

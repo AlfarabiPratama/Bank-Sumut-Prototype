@@ -298,7 +298,7 @@ const RMMobileApp: React.FC<RMMobileAppProps> = ({ customers, campaigns, current
       <div className="bg-gradient-to-r from-sumut-blue to-sumut-darkBlue text-white p-4">
         <div className="flex items-center justify-between mb-2">
           <div className="flex items-center gap-2">
-            <img src="/bank-sumut-logo.svg" alt="Bank Sumut" className="h-5 w-auto brightness-0 invert" />
+            <img src={`${import.meta.env.BASE_URL}bank-sumut-logo.svg`} alt="Bank Sumut" className="h-5 w-auto brightness-0 invert" />
             <span className="text-[10px] text-white/60 border-l border-white/20 pl-2">CRM Mobile</span>
           </div>
           <button className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center relative">
