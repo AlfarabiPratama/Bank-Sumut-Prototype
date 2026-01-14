@@ -169,6 +169,7 @@ const ExecutiveDashboard: React.FC<ExecutiveDashboardProps> = ({
             target={metrics.revenueTarget}
             targetLabel="Monthly Target"
             status={metrics.totalRevenue >= metrics.revenueTarget * 0.9 ? 'success' : 'warning'}
+            tooltip="Total pendapatan dari bunga kredit, fee-based income, dan pendapatan lainnya. Target bulanan ditetapkan oleh Direksi."
           />
           
           <HeroKPI
@@ -183,6 +184,7 @@ const ExecutiveDashboard: React.FC<ExecutiveDashboardProps> = ({
               { label: 'Active', value: metrics.activeCustomers, color: '#3b82f6' },
               { label: 'Churned', value: metrics.churnedCustomers, color: '#ef4444' }
             ]}
+            tooltip="Jumlah total nasabah aktif. New = baru dalam 30 hari, Active = transaksi dalam 90 hari, Churned = tidak aktif > 180 hari."
           />
           
           <HeroKPI
@@ -193,6 +195,7 @@ const ExecutiveDashboard: React.FC<ExecutiveDashboardProps> = ({
             change={metrics.aumChange}
             changeLabel="vs last period"
             subtitle="Total customer deposits"
+            tooltip="Total dana kelolaan nasabah termasuk tabungan, deposito, dan reksa dana. Menunjukkan kepercayaan nasabah terhadap bank."
           />
           
           <HeroKPI
@@ -204,6 +207,7 @@ const ExecutiveDashboard: React.FC<ExecutiveDashboardProps> = ({
             change={metrics.penetrationChange}
             target={metrics.penetrationTarget}
             targetLabel="Target"
+            tooltip="Rata-rata jumlah produk yang dimiliki per nasabah. Semakin tinggi = cross-sell berhasil. Target industri: 3+ produk."
           />
         </div>
 
@@ -212,24 +216,28 @@ const ExecutiveDashboard: React.FC<ExecutiveDashboardProps> = ({
           <h2 className="text-lg font-bold text-gray-900 mb-4">🏥 Business Health Scorecard</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             <HealthMetric
-              category="Revenue Health"
+              category="Kesehatan Pendapatan"
               score={metrics.healthScores.revenue}
               indicators={revenueIndicators}
+              tooltip="Mengukur performa pendapatan bank: pencapaian target, pertumbuhan, dan pendapatan per nasabah."
             />
             <HealthMetric
-              category="Customer Health"
+              category="Kesehatan Nasabah"
               score={metrics.healthScores.customer}
               indicators={customerIndicators}
+              tooltip="Mengukur loyalitas dan kepuasan nasabah: churn rate, NPS, dan CSAT score."
             />
             <HealthMetric
-              category="Operations Health"
+              category="Kesehatan Operasional"
               score={metrics.healthScores.operations}
               indicators={operationsIndicators}
+              tooltip="Mengukur efisiensi operasi: kepatuhan SLA, waktu respons, dan tingkat resolusi."
             />
             <HealthMetric
-              category="Team Health"
+              category="Kesehatan Tim"
               score={metrics.healthScores.team}
               indicators={teamIndicators}
+              tooltip="Mengukur produktivitas tim: pencapaian target sales, utilisasi, dan kapasitas."
             />
           </div>
         </div>

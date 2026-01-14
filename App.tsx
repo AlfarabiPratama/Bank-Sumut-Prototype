@@ -6,10 +6,12 @@ import { RoleProvider } from './contexts/RoleContext';
 import { MOCK_USER, MOCK_CUSTOMERS_LIST, MOCK_CAMPAIGNS } from './constants';
 import { User, Transaction, Campaign, DreamSaverActivity, PushNotification } from './types';
 import { UserRole } from './types/rbac';
+import { ChevronDown, ChevronUp } from 'lucide-react';
 
 // App Content with RBAC
 function AppContent() {
   const [view, setView] = useState<'mobile' | 'admin'>('admin');
+  const [isHeaderOpen, setIsHeaderOpen] = useState(true);
   const { demoState } = useDemoContext();
   
   // RBAC State - managed here, role switcher in AdminDashboard sidebar
@@ -120,35 +122,57 @@ function AppContent() {
   return (
     <div className="min-h-screen bg-gray-50">
 
-      {/* Simple Header - View Switcher Only */}
-      <div className="w-full bg-white border-b border-gray-200 px-4 py-3 flex items-center justify-center gap-4 shadow-sm">
-        <div className="flex items-center gap-3">
-          <img src={`${import.meta.env.BASE_URL}bank-sumut-logo.svg`} alt="Bank Sumut" className="h-8 w-auto" />
-          <h1 className="font-bold text-lg text-gray-800">SULTAN <span className="text-sumut-blue text-sm font-normal">RFM CRM</span></h1>
+      {/* Collapsible Header - View Switcher */}
+      <div className={`w-full bg-white border-b border-gray-200 shadow-sm transition-all duration-300 ${isHeaderOpen ? 'py-3' : 'py-1'}`}>
+        <div className="flex items-center justify-center gap-4 px-4">
+          {/* Toggle Button */}
+          <button
+            onClick={() => setIsHeaderOpen(!isHeaderOpen)}
+            className="p-1.5 rounded-lg hover:bg-gray-100 transition-colors text-gray-500"
+            title={isHeaderOpen ? 'Sembunyikan header' : 'Tampilkan header'}
+          >
+            {isHeaderOpen ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
+          </button>
+          
+          {/* Header Content - Collapsible */}
+          {isHeaderOpen ? (
+            <>
+              <div className="flex items-center gap-3">
+                <img src={`${import.meta.env.BASE_URL}bank-sumut-logo.svg`} alt="Bank Sumut" className="h-8 w-auto" />
+                <h1 className="font-bold text-lg text-gray-800">CRM <span className="text-sumut-blue text-sm font-normal">Bank Sumut</span></h1>
+              </div>
+              
+              <div className="h-6 w-px bg-gray-300 mx-2" />
+              
+              <button
+                onClick={() => setView('admin')}
+                className={`px-5 py-2 rounded-lg font-semibold transition text-sm ${
+                  view === 'admin'
+                    ? 'bg-gradient-to-r from-sumut-blue to-sumut-darkBlue text-white shadow-lg'
+                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                }`}
+              >
+                📊 Dashboard
+              </button>
+              <button
+                onClick={() => setView('mobile')}
+                className={`px-5 py-2 rounded-lg font-semibold transition text-sm ${
+                  view === 'mobile'
+                    ? 'bg-gradient-to-r from-green-600 to-emerald-600 text-white shadow-lg'
+                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                }`}
+              >
+                📱 Mobile App
+              </button>
+            </>
+          ) : (
+            /* Collapsed View - Mini indicator */
+            <div className="flex items-center gap-2 text-xs text-gray-500">
+              <span className={`w-2 h-2 rounded-full ${view === 'admin' ? 'bg-sumut-blue' : 'bg-green-500'}`}></span>
+              <span>{view === 'admin' ? 'Dashboard' : 'Mobile App'}</span>
+            </div>
+          )}
         </div>
-        
-        <div className="h-6 w-px bg-gray-300 mx-2" />
-        
-        <button
-          onClick={() => setView('admin')}
-          className={`px-5 py-2 rounded-lg font-semibold transition text-sm ${
-            view === 'admin'
-              ? 'bg-gradient-to-r from-sumut-blue to-sumut-darkBlue text-white shadow-lg'
-              : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-          }`}
-        >
-          📊 Admin Dashboard
-        </button>
-        <button
-          onClick={() => setView('mobile')}
-          className={`px-5 py-2 rounded-lg font-semibold transition text-sm ${
-            view === 'mobile'
-              ? 'bg-gradient-to-r from-green-600 to-emerald-600 text-white shadow-lg'
-              : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-          }`}
-        >
-          📱 Mobile App
-        </button>
       </div>
 
       {/* Demo Mode Indicator */}

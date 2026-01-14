@@ -1,4 +1,4 @@
-# SULTAN - Bank Sumut Gen-Z CRM Ecosystem
+# CRM Bank Sumut - Gen-Z Customer Platform
 
 **Sistem Uang & Layanan Tabungan Andalan**
 

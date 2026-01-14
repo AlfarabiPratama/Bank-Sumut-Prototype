@@ -96,27 +96,32 @@ export function generateExecutiveMetrics(
   campaigns: Campaign[],
   applications: LoanApplication[]
 ): ExecutiveMetrics {
-  const totalCustomers = customers.length;
-  const totalBalance = customers.reduce((sum, c) => sum + c.balance, 0);
-  const avgBalance = totalCustomers > 0 ? totalBalance / totalCustomers : 0;
+  // Safety checks for undefined/empty data
+  const safeCustomers = customers || [];
+  const safeCampaigns = campaigns || [];
+  const safeApplications = applications || [];
+  
+  const totalCustomers = safeCustomers.length || 1; // Prevent division by zero
+  const totalBalance = safeCustomers.reduce((sum, c) => sum + (c?.balance || 0), 0);
+  const avgBalance = totalBalance / totalCustomers;
   
   // Revenue calculation (simplified: loan amounts + estimated fee revenue)
-  const loanRevenue = applications
-    .filter(a => a.stage === 'disbursement' || a.stage === 'active')
-    .reduce((sum, a) => sum + (a.amount * 0.05), 0); // 5% as revenue estimate
+  const loanRevenue = safeApplications
+    .filter(a => a?.stage === 'disbursement' || a?.stage === 'active')
+    .reduce((sum, a) => sum + ((a?.amount || 0) * 0.05), 0); // 5% as revenue estimate
   
   const totalRevenue = loanRevenue + (totalBalance * 0.02); // 2% on deposits
   const revenueTarget = 2500000000; // 2.5B target
   
   // Customer segmentation
-  const activeCustomers = customers.filter(c => 
-    c.segment === 'Champions' || c.segment === 'Loyal Customers'
+  const activeCustomers = safeCustomers.filter(c => 
+    c?.segment === 'Champions' || c?.segment === 'Loyal Customers'
   ).length;
   const newCustomers = Math.floor(totalCustomers * 0.036); // 3.6% growth
   const churnedCustomers = Math.floor(totalCustomers * 0.012); // 1.2% churn
   
-  // Product penetration
-  const avgProducts = customers.reduce((sum, c) => sum + c.products.length, 0) / totalCustomers;
+  // Product penetration - with null safety
+  const avgProducts = safeCustomers.reduce((sum, c) => sum + (c?.products?.length || 0), 0) / totalCustomers;
   
   // AUM trend (last 12 months)
   const aumTrend = Array.from({ length: 12 }, (_, i) => ({
@@ -134,7 +139,7 @@ export function generateExecutiveMetrics(
   const alerts: CriticalAlert[] = [];
   
   // Churn risk alert
-  const atRiskCustomers = customers.filter(c => c.segment === 'At Risk').length;
+  const atRiskCustomers = safeCustomers.filter(c => c?.segment === 'At Risk').length;
   if (atRiskCustomers > 5) {
     alerts.push({
       id: 'alert-churn-1',
@@ -195,12 +200,13 @@ export function generateExecutiveMetrics(
   
   // Revenue by segment
   const segmentStats: Record<string, { count: number; avgBalance: number }> = {};
-  customers.forEach(c => {
+  safeCustomers.forEach(c => {
+    if (!c?.segment) return;
     if (!segmentStats[c.segment]) {
       segmentStats[c.segment] = { count: 0, avgBalance: 0 };
     }
     segmentStats[c.segment].count++;
-    segmentStats[c.segment].avgBalance += c.balance;
+    segmentStats[c.segment].avgBalance += c?.balance || 0;
   });
   
   const revenueBySegment = Object.entries(segmentStats).map(([segment, stats]) => ({
@@ -210,12 +216,13 @@ export function generateExecutiveMetrics(
   
   // RFM distribution with value
   const rfmStats: Record<string, { count: number; value: number }> = {};
-  customers.forEach(c => {
+  safeCustomers.forEach(c => {
+    if (!c?.segment) return;
     if (!rfmStats[c.segment]) {
       rfmStats[c.segment] = { count: 0, value: 0 };
     }
     rfmStats[c.segment].count++;
-    rfmStats[c.segment].value += c.balance;
+    rfmStats[c.segment].value += c?.balance || 0;
   });
   
   const rfmDistribution = Object.entries(rfmStats).map(([segment, stats]) => ({
@@ -231,32 +238,32 @@ export function generateExecutiveMetrics(
     { stage: 'New Customer', count: newCustomers },
     { stage: 'Active', count: activeCustomers },
     { stage: 'Loyal', count: Math.floor(activeCustomers * 0.4) },
-    { stage: 'At Risk', count: customers.filter(c => c.segment === 'At Risk').length },
+    { stage: 'At Risk', count: safeCustomers.filter(c => c?.segment === 'At Risk').length },
     { stage: 'Churned', count: churnedCustomers }
   ];
   
   // VIP customers (Champions + high balance)
-  const vipCustomers = customers.filter(c => 
-    c.segment === 'Champions' && c.balance > avgBalance * 2
+  const vipCustomers = safeCustomers.filter(c => 
+    c?.segment === 'Champions' && (c?.balance || 0) > avgBalance * 2
   ).length;
-  const vipAUM = customers
-    .filter(c => c.segment === 'Champions' && c.balance > avgBalance * 2)
-    .reduce((sum, c) => sum + c.balance, 0);
+  const vipAUM = safeCustomers
+    .filter(c => c?.segment === 'Champions' && (c?.balance || 0) > avgBalance * 2)
+    .reduce((sum, c) => sum + (c?.balance || 0), 0);
   
   // Predictive insights
   const avgMonthlyRevenue = revenueTrend.slice(-3).reduce((s, m) => s + m.revenue, 0) / 3;
   const forecastRevenue = avgMonthlyRevenue * 1.08; // 8% growth forecast
   const forecastConfidence = 78; // Mock confidence
   
-  const churnRiskCustomers = customers.filter(c => 
-    c.segment === 'At Risk' && c.balance > avgBalance
+  const churnRiskCustomers = safeCustomers.filter(c => 
+    c?.segment === 'At Risk' && (c?.balance || 0) > avgBalance
   ).length;
-  const churnRiskValue = customers
-    .filter(c => c.segment === 'At Risk' && c.balance > avgBalance)
-    .reduce((sum, c) => sum + c.balance, 0);
+  const churnRiskValue = safeCustomers
+    .filter(c => c?.segment === 'At Risk' && (c?.balance || 0) > avgBalance)
+    .reduce((sum, c) => sum + (c?.balance || 0), 0);
   
-  const crossSellOpportunities = customers.filter(c => 
-    c.products.length < 2 && c.balance > avgBalance * 1.5
+  const crossSellOpportunities = safeCustomers.filter(c => 
+    (c?.products?.length || 0) < 2 && (c?.balance || 0) > avgBalance * 1.5
   ).length;
   const crossSellPotential = crossSellOpportunities * avgBalance * 0.1; // 10% potential revenue
   

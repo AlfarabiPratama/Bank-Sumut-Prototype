@@ -2,10 +2,11 @@ import React, { useMemo } from 'react';
 import { 
   Users, Target, TrendingUp, AlertTriangle, Clock, Calendar, 
   ChevronRight, Phone, MessageCircle, Mail, Briefcase, 
-  MoreHorizontal, Plus, Star
+  MoreHorizontal, Plus, Star, HelpCircle
 } from 'lucide-react';
 import { MOCK_URGENT_ACTIONS, MOCK_OPPORTUNITIES, MOCK_RM_CUSTOMERS } from './mockData';
 import { Opportunity, UrgentAction, User } from '../../../types';
+import Tooltip from '../../ui/Tooltip';
 
 interface RMHomeProps {
   userName?: string;
@@ -40,6 +41,9 @@ const RMHome: React.FC<RMHomeProps> = ({ userName = "Ahmad Siregar" }) => {
             <div className="bg-white/10 backdrop-blur-sm rounded-lg p-3 min-w-[140px]">
               <div className="flex items-center gap-2 text-blue-200 mb-1 text-xs uppercase tracking-wider">
                 <Target size={14} /> Target Bulan Ini
+                <Tooltip content="Total pencapaian penjualan bulan ini dibanding target. Termasuk closing kredit, deposito, dan produk lainnya." position="bottom">
+                  <HelpCircle size={12} className="text-blue-300 hover:text-white cursor-help" />
+                </Tooltip>
               </div>
               <div className="text-xl font-bold">{formatCurrency(stats.achieved)}</div>
               <div className="text-xs text-blue-200 mt-1">
@@ -53,6 +57,9 @@ const RMHome: React.FC<RMHomeProps> = ({ userName = "Ahmad Siregar" }) => {
             <div className="bg-white/10 backdrop-blur-sm rounded-lg p-3 min-w-[140px]">
               <div className="flex items-center gap-2 text-blue-200 mb-1 text-xs uppercase tracking-wider">
                 <TrendingUp size={14} /> Pipeline Value
+                <Tooltip content="Total nilai potensial dari semua deal yang sedang dalam proses (Lead → Proposal → Negosiasi → Closing)." position="bottom">
+                  <HelpCircle size={12} className="text-blue-300 hover:text-white cursor-help" />
+                </Tooltip>
               </div>
               <div className="text-xl font-bold">{formatCurrency(stats.pipeline)}</div>
               <div className="text-xs text-green-300 mt-1 flex items-center gap-1">
@@ -126,6 +133,9 @@ const RMHome: React.FC<RMHomeProps> = ({ userName = "Ahmad Siregar" }) => {
             <div className="flex items-center justify-between mb-4">
               <h3 className="font-bold text-gray-900 flex items-center gap-2">
                 <Star size={18} className="text-amber-500" /> Peluang Terbaik (NBA)
+                <Tooltip content="Next Best Action - rekomendasi AI untuk peluang cross-sell/up-sell berdasarkan profil dan perilaku nasabah. Prioritaskan yang confidence tinggi." position="right">
+                  <HelpCircle size={14} className="text-gray-400 hover:text-blue-500 cursor-help" />
+                </Tooltip>
               </h3>
               <span className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded-full">AI Powered</span>
             </div>

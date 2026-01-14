@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { TrendingUp, Flame, ThermometerSun, Snowflake, User, ArrowRight, MessageSquare, Phone, MoreHorizontal } from 'lucide-react';
+import { TrendingUp, Flame, ThermometerSun, Snowflake, User, ArrowRight, MessageSquare, Phone, MoreHorizontal, HelpCircle } from 'lucide-react';
 import { MOCK_SCORED_LEADS } from './mockData';
 import { ScoredLead } from '../../../types';
+import Tooltip from '../../ui/Tooltip';
 
 const LeadBoard = () => {
     const [filterTemperature, setFilterTemperature] = useState<'ALL' | 'HOT' | 'WARM' | 'COLD'>('ALL');
@@ -32,9 +33,12 @@ const LeadBoard = () => {
                 <div className="flex items-center gap-2 mb-2">
                     <div className="p-1.5 bg-red-100 rounded-lg text-red-600"><Flame size={18} /></div>
                     <span className="font-bold text-gray-700">Hot Leads</span>
+                    <Tooltip content="Prospek dengan probabilitas tinggi untuk closing. Score >80. Perlu follow-up dalam 24-48 jam." position="top">
+                      <HelpCircle size={12} className="text-gray-400 hover:text-red-500 cursor-help" />
+                    </Tooltip>
                 </div>
                 <div className="text-2xl font-bold text-gray-900">{stats.hot}</div>
-                <div className="text-xs text-red-600 font-medium">High Priority</div>
+                <div className="text-xs text-red-600 font-medium">Prioritas Tinggi</div>
             </div>
 
             <div 
@@ -44,9 +48,12 @@ const LeadBoard = () => {
                 <div className="flex items-center gap-2 mb-2">
                     <div className="p-1.5 bg-orange-100 rounded-lg text-orange-600"><ThermometerSun size={18} /></div>
                     <span className="font-bold text-gray-700">Warm Leads</span>
+                    <Tooltip content="Prospek dengan potensi sedang. Score 50-80. Perlu nurturing: edukasi produk, follow-up berkala." position="top">
+                      <HelpCircle size={12} className="text-gray-400 hover:text-orange-500 cursor-help" />
+                    </Tooltip>
                 </div>
                 <div className="text-2xl font-bold text-gray-900">{stats.warm}</div>
-                <div className="text-xs text-orange-600 font-medium">Nurturing Needed</div>
+                <div className="text-xs text-orange-600 font-medium">Perlu Nurturing</div>
             </div>
 
             <div 
@@ -56,18 +63,24 @@ const LeadBoard = () => {
                 <div className="flex items-center gap-2 mb-2">
                     <div className="p-1.5 bg-blue-100 rounded-lg text-blue-600"><Snowflake size={18} /></div>
                     <span className="font-bold text-gray-700">Cold Leads</span>
+                    <Tooltip content="Prospek dengan probabilitas rendah saat ini. Score <50. Masuk pipeline jangka panjang." position="top">
+                      <HelpCircle size={12} className="text-gray-400 hover:text-blue-500 cursor-help" />
+                    </Tooltip>
                 </div>
                 <div className="text-2xl font-bold text-gray-900">{stats.cold}</div>
-                <div className="text-xs text-blue-600 font-medium">Long Term</div>
+                <div className="text-xs text-blue-600 font-medium">Jangka Panjang</div>
             </div>
 
             <div className={`bg-white p-4 rounded-xl border border-gray-200`}>
                 <div className="flex items-center gap-2 mb-2">
                     <div className="p-1.5 bg-green-100 rounded-lg text-green-600"><TrendingUp size={18} /></div>
                     <span className="font-bold text-gray-700">Potential Value</span>
+                    <Tooltip content="Total potensi pendapatan dari semua leads berdasarkan rekomendasi NBA (Next Best Action)." position="top">
+                      <HelpCircle size={12} className="text-gray-400 hover:text-green-500 cursor-help" />
+                    </Tooltip>
                 </div>
                 <div className="text-2xl font-bold text-gray-900">{formatCurrency(stats.totalValue)}</div>
-                <div className="text-xs text-green-600 font-medium">From NBAs</div>
+                <div className="text-xs text-green-600 font-medium">Dari NBA</div>
             </div>
         </div>
 

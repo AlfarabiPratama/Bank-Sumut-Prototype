@@ -22,6 +22,15 @@ import { CSPerformance } from '../cs/CSPerformance';
 import MarketingCloud from './marketing/MarketingCloud';
 // RM-specific imports
 import SalesCloud from './sales/SalesCloud';
+// Director-specific imports
+import ExecutiveDashboard from './ExecutiveDashboard';
+import PerformanceAnalytics from '../director/PerformanceAnalytics';
+import BusinessInsights from '../director/BusinessInsights';
+// Supervisor-specific imports
+import TeamOverview from '../supervisor/TeamOverview';
+import EscalationQueue from '../supervisor/EscalationQueue';
+// Guide component
+import FeatureGuide from '../guide/FeatureGuide';
 
 interface AdminDashboardProps {
   customers?: User[];
@@ -52,11 +61,13 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ customers: propCustomer
   const permissions = ROLE_PERMISSIONS[currentRole];
   const roleMeta = ROLE_METADATA[currentRole];
   
-  const [activeTab, setActiveTab] = useState<'dashboard' | 'customers' | 'campaigns' | 'settings' | 'tickets' | 'kb' | 'performance' | 'mkt_overview' | 'mkt_campaigns' | 'mkt_segments' | 'mkt_content' | 'rm_performance' | 'rm_portfolio' | 'rm_leads' | 'rm_pipeline' | 'rm_activity'>(() => {
+  const [activeTab, setActiveTab] = useState<'dashboard' | 'customers' | 'campaigns' | 'settings' | 'tickets' | 'kb' | 'performance' | 'mkt_overview' | 'mkt_campaigns' | 'mkt_segments' | 'mkt_content' | 'rm_performance' | 'rm_portfolio' | 'rm_leads' | 'rm_pipeline' | 'rm_activity' | 'dir_executive' | 'dir_performance' | 'dir_insights' | 'sup_overview' | 'sup_escalations' | 'pipeline' | 'demo' | 'guide'>(() => {
     // Initialize to first available tab based on role
     if (currentRole === 'CS') return 'tickets';
     if (currentRole === 'MARKETING') return 'mkt_overview';
     if (currentRole === 'RM') return 'rm_performance';
+    if (currentRole === 'DIRECTOR') return 'dir_executive';
+    if (currentRole === 'SUPERVISOR') return 'sup_overview';
     const firstTab = availableTabs[0] as 'dashboard' | 'customers' | 'campaigns' | 'settings';
     return firstTab || 'dashboard';
   });
@@ -78,6 +89,10 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ customers: propCustomer
         setActiveTab('mkt_overview');
       } else if (currentRole === 'RM') {
         setActiveTab('rm_performance');
+      } else if (currentRole === 'DIRECTOR') {
+        setActiveTab('dir_executive');
+      } else if (currentRole === 'SUPERVISOR') {
+        setActiveTab('sup_overview');
       } else if (!availableTabs.includes(activeTab as any)) {
         const firstTab = availableTabs[0] as 'dashboard' | 'customers' | 'campaigns' | 'settings';
         if (firstTab) setActiveTab(firstTab);
@@ -808,12 +823,12 @@ _Klik "▶ Activate Campaign" untuk meluncurkan._`);
     <div className="min-h-screen bg-gray-50 flex font-sans text-slate-800">
       
       {/* Sidebar */}
-      <aside className="w-64 bg-white border-r border-gray-200 hidden md:flex flex-col fixed h-full z-10">
+      <aside className="w-64 bg-white border-r border-gray-200 hidden md:flex flex-col fixed top-0 left-0 h-full z-10 overflow-y-auto">
         <div className="p-5 border-b border-gray-100">
            <div className="flex items-center gap-3">
              <img src={`${import.meta.env.BASE_URL}bank-sumut-logo.svg`} alt="Bank Sumut" className="h-10 w-auto object-contain" />
              <div className="flex flex-col">
-               <h1 className="font-bold text-lg text-slate-900 leading-tight">SULTAN</h1>
+               <h1 className="font-bold text-lg text-slate-900 leading-tight">CRM Bank Sumut</h1>
                <p className="text-[11px] text-gray-500 font-medium">CRM Dashboard v2.0</p>
              </div>
            </div>
@@ -881,7 +896,7 @@ _Klik "▶ Activate Campaign" untuk meluncurkan._`);
           )}
         </div>
         
-        <nav className="flex-1 p-4 space-y-1">
+        <nav className="flex-1 p-4 space-y-1 overflow-y-auto scrollbar-hide">
           {/* CS-Specific Navigation */}
           {currentRole === 'CS' ? (
             <>
@@ -972,6 +987,102 @@ _Klik "▶ Activate Campaign" untuk meluncurkan._`);
                 onClick={() => setActiveTab('rm_activity')} 
               />
             </>
+          ) : currentRole === 'DIRECTOR' ? (
+            <>
+              {/* Director-Specific Navigation */}
+              <SidebarItem 
+                icon={<LayoutDashboard size={20} />} 
+                label="Executive Dashboard" 
+                active={activeTab === 'dir_executive'} 
+                onClick={() => setActiveTab('dir_executive')} 
+              />
+              <SidebarItem 
+                icon={<BarChart3 size={20} />} 
+                label="Performance Analytics" 
+                active={activeTab === 'dir_performance'} 
+                onClick={() => setActiveTab('dir_performance')} 
+              />
+              <SidebarItem 
+                icon={<Sparkles size={20} />} 
+                label="Business Insights" 
+                active={activeTab === 'dir_insights'} 
+                onClick={() => setActiveTab('dir_insights')} 
+              />
+              
+              {/* Director can also see RFM Dashboard and Customers */}
+              <div className="border-t border-gray-200 my-2 pt-2">
+                <p className="text-xs text-gray-400 font-medium px-4 mb-2">DATA ACCESS</p>
+              </div>
+              {availableTabs.includes('dashboard') && (
+                <SidebarItem 
+                  icon={<PieChartIcon size={20} />} 
+                  label="Dashboard RFM" 
+                  active={activeTab === 'dashboard'} 
+                  onClick={() => setActiveTab('dashboard')} 
+                />
+              )}
+              {availableTabs.includes('customers') && (
+                <SidebarItem 
+                  icon={<Users size={20} />} 
+                  label="Daftar Nasabah" 
+                  active={activeTab === 'customers'} 
+                  onClick={() => setActiveTab('customers')} 
+                />
+              )}
+              {availableTabs.includes('settings') && (
+                <SidebarItem 
+                  icon={<Settings size={20} />} 
+                  label="Konfigurasi" 
+                  active={activeTab === 'settings'} 
+                  onClick={() => setActiveTab('settings')} 
+                />
+              )}
+            </>
+          ) : currentRole === 'SUPERVISOR' ? (
+            <>
+              {/* Supervisor-Specific Navigation */}
+              <SidebarItem 
+                icon={<Users size={20} />} 
+                label="Team Overview" 
+                active={activeTab === 'sup_overview'} 
+                onClick={() => setActiveTab('sup_overview')} 
+              />
+              <SidebarItem 
+                icon={<AlertCircle size={20} />} 
+                label="Escalations" 
+                active={activeTab === 'sup_escalations'} 
+                onClick={() => setActiveTab('sup_escalations')} 
+              />
+              
+              {/* Supervisor can also see RFM Dashboard and Customers */}
+              <div className="border-t border-gray-200 my-2 pt-2">
+                <p className="text-xs text-gray-400 font-medium px-4 mb-2">DATA ACCESS</p>
+              </div>
+              {availableTabs.includes('dashboard') && (
+                <SidebarItem 
+                  icon={<PieChartIcon size={20} />} 
+                  label="Dashboard RFM" 
+                  active={activeTab === 'dashboard'} 
+                  onClick={() => setActiveTab('dashboard')} 
+                />
+              )}
+              {availableTabs.includes('customers') && (
+                <SidebarItem 
+                  icon={<Users size={20} />} 
+                  label="Daftar Nasabah" 
+                  active={activeTab === 'customers'} 
+                  onClick={() => setActiveTab('customers')} 
+                />
+              )}
+              {availableTabs.includes('settings') && (
+                <SidebarItem 
+                  icon={<Settings size={20} />} 
+                  label="Konfigurasi" 
+                  active={activeTab === 'settings'} 
+                  onClick={() => setActiveTab('settings')} 
+                />
+              )}
+            </>
           ) : (
             <>
               {/* Default Navigation for other roles */}
@@ -1009,6 +1120,19 @@ _Klik "▶ Activate Campaign" untuk meluncurkan._`);
               )}
             </>
           )}
+          
+          {/* Separator & Help Section - Available for all roles */}
+          <div className="mt-4 pt-4 border-t border-gray-800">
+            <div className="px-4 mb-2">
+              <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Bantuan</span>
+            </div>
+            <SidebarItem 
+              icon={<BookOpen size={20} />} 
+              label="📖 Panduan Fitur" 
+              active={activeTab === 'guide'} 
+              onClick={() => setActiveTab('guide')} 
+            />
+          </div>
         </nav>
       </aside>
 
@@ -1137,7 +1261,7 @@ _Klik "▶ Activate Campaign" untuk meluncurkan._`);
           <div className="h-[calc(100vh-2rem)] bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
             <SalesCloud
               customers={processedCustomers}
-              applications={MOCK_LOAN_APPLICATIONS}
+              applications={[...MOCK_LOAN_APPLICATIONS]}
               onSelectCustomer={(customer) => setSelectedCustomer(customer)}
               hideSidebar={true}
               activeSubTab={
@@ -1149,6 +1273,45 @@ _Klik "▶ Activate Campaign" untuk meluncurkan._`);
               }
             />
           </div>
+        )}
+
+        {/* Director-Specific Content */}
+        {currentRole === 'DIRECTOR' && activeTab === 'dir_executive' && (
+          <ExecutiveDashboard
+            customers={processedCustomers}
+            campaigns={campaigns}
+            applications={[...MOCK_LOAN_APPLICATIONS]}
+            onNavigateToPillar={(pillar) => {
+              if (pillar === 'marketing') setActiveTab('mkt_overview');
+              else if (pillar === 'sales') setActiveTab('rm_performance');
+              else if (pillar === 'service') setActiveTab('tickets');
+            }}
+          />
+        )}
+
+        {currentRole === 'DIRECTOR' && activeTab === 'dir_performance' && (
+          <PerformanceAnalytics />
+        )}
+
+        {currentRole === 'DIRECTOR' && activeTab === 'dir_insights' && (
+          <BusinessInsights />
+        )}
+
+        {/* Supervisor-Specific Content */}
+        {currentRole === 'SUPERVISOR' && activeTab === 'sup_overview' && (
+          <TeamOverview />
+        )}
+
+        {currentRole === 'SUPERVISOR' && activeTab === 'sup_escalations' && (
+          <EscalationQueue />
+        )}
+
+        {/* Feature Guide Tab - Available for all roles */}
+        {activeTab === 'guide' && (
+          <FeatureGuide 
+            role={currentRole}
+            onNavigate={(tab) => setActiveTab(tab as any)}
+          />
         )}
 
         {/* RFM Settings Tab */}
@@ -2873,7 +3036,7 @@ _Klik "▶ Activate Campaign" untuk meluncurkan._`);
                  <thead className="bg-gray-50">
                    <tr>
                      <th className="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Tahapan Logika CRM</th>
-                     <th className="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Implementasi di SULTAN App</th>
+                     <th className="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Implementasi di Aplikasi</th>
                    </tr>
                  </thead>
                  <tbody className="bg-white divide-y divide-gray-200">

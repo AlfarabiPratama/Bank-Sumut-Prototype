@@ -1,4 +1,4 @@
-# SULTAN CRM - Current Implementation State
+# CRM Bank Sumut - Current Implementation State
 
 > **Document Type**: Technical Status Report  
 > **Last Updated**: January 2026  
@@ -8,7 +8,7 @@
 
 ## Overview
 
-SULTAN CRM adalah Proof of Concept platform Customer Relationship Management untuk Bank Sumut yang mendemonstrasikan kapabilitas RFM-based Customer 360 dan CRM analytics terintegrasi.
+CRM Bank Sumut adalah Proof of Concept platform Customer Relationship Management untuk Bank Sumut yang mendemonstrasikan kapabilitas RFM-based Customer 360 dan CRM analytics terintegrasi.
 
 > [!NOTE]
 > Dokumen ini menjelaskan **apa yang sudah diimplementasi** vs **apa yang ada di dokumentasi vision**. Untuk vision lengkap, lihat [Dokumentasi Teknis Platform CRM Bank Sumut.md](./Dokumentasi%20Teknis%20Platform%20CRM%20Bank%20Sumut.md).

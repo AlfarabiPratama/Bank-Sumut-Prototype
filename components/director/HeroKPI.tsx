@@ -1,5 +1,6 @@
 import React from 'react';
-import { LucideIcon, TrendingUp, TrendingDown } from 'lucide-react';
+import { LucideIcon, TrendingUp, TrendingDown, HelpCircle } from 'lucide-react';
+import Tooltip from '../ui/Tooltip';
 
 export interface HeroKPIProps {
   icon: LucideIcon;
@@ -18,6 +19,7 @@ export interface HeroKPIProps {
     color?: string;
   }[];
   onClick?: () => void;
+  tooltip?: string; // NEW: Tooltip for explaining the KPI
 }
 
 const HeroKPI: React.FC<HeroKPIProps> = ({
@@ -32,7 +34,8 @@ const HeroKPI: React.FC<HeroKPIProps> = ({
   targetLabel,
   status = 'default',
   breakdown,
-  onClick
+  onClick,
+  tooltip
 }) => {
   const isPositive = change ? change > 0 : null;
   const targetProgress = target && typeof value === 'number' ? (value / target) * 100 : null;
@@ -74,8 +77,15 @@ const HeroKPI: React.FC<HeroKPIProps> = ({
         )}
       </div>
       
-      {/* Label */}
-      <h4 className="text-sm font-medium text-gray-600 mb-1">{label}</h4>
+      {/* Label with Tooltip */}
+      <div className="flex items-center gap-1.5 mb-1">
+        <h4 className="text-sm font-medium text-gray-600">{label}</h4>
+        {tooltip && (
+          <Tooltip content={tooltip} position="top">
+            <HelpCircle size={14} className="text-gray-400 hover:text-blue-500 cursor-help transition-colors" />
+          </Tooltip>
+        )}
+      </div>
       
       {/* Value */}
       <div className="mb-3">

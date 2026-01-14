@@ -1,4 +1,4 @@
-# SULTAN CRM - Implementation Roadmap
+# CRM Bank Sumut - Implementation Roadmap
 
 > **Document Type**: Development Roadmap  
 > **Last Updated**: January 2026  
@@ -8,7 +8,7 @@
 
 ## Executive Summary
 
-Dokumen ini menjelaskan roadmap pengembangan SULTAN CRM dari Proof of Concept (PoC) menuju production-ready platform. Pendekatan yang digunakan adalah **phased implementation** yang memprioritaskan nilai bisnis tertinggi dengan kompleksitas implementasi terendah.
+Dokumen ini menjelaskan roadmap pengembangan CRM Bank Sumut dari Proof of Concept (PoC) menuju production-ready platform. Pendekatan yang digunakan adalah **phased implementation** yang memprioritaskan nilai bisnis tertinggi dengan kompleksitas implementasi terendah.
 
 ---
 
@@ -16,7 +16,7 @@ Dokumen ini menjelaskan roadmap pengembangan SULTAN CRM dari Proof of Concept (P
 
 ```
 ┌─────────────────────────────────────────────────────────────────────┐
-│                     SULTAN CRM Development Roadmap                   │
+│                  CRM Bank Sumut Development Roadmap                  │
 │                                                                      │
 │  ┌──────────┐   ┌──────────┐   ┌──────────┐   ┌──────────┐          │
 │  │ Phase 1  │──▶│ Phase 2  │──▶│ Phase 3  │──▶│ Phase 4  │──▶ ...   │

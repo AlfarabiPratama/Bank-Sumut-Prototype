@@ -1,6 +1,6 @@
 /**
  * RBAC (Role-Based Access Control) Type Definitions
- * Enhanced RBAC for SULTAN CRM with 6 roles and granular permissions
+ * Enhanced RBAC for CRM Bank Sumut with 6 roles and granular permissions
  */
 
 // 6 Roles aligned with Banking organizational structure
